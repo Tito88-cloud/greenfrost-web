@@ -304,8 +304,8 @@ function initOrders() {
         if(container) {
             toppings[cat].forEach(t => {
                 const div = document.createElement('div');
-                div.className = 'topping-item';
-                div.innerText = t;
+                div.className = 'topping-chip';
+                div.innerHTML = `<span class="chip-emoji">🍦</span> ${t}`;
                 div.onclick = () => toggleTopping(t, div);
                 container.appendChild(div);
             });
@@ -320,12 +320,14 @@ function selectSize(el) {
     currentSelection = { size: name, price: p, max: limit, toppings: [], notes: '' };
     document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
-    document.querySelectorAll('.topping-item').forEach(t => t.classList.remove('active'));
     document.getElementById('order-notes').value = '';
     document.getElementById('toppings-section').style.display = 'block';
     document.getElementById('notes-section').style.display = 'block';
     
     document.getElementById('toppings-subtitle').innerHTML = `Selecciona hasta <strong>${limit}</strong> toppings incluidos`;
+    
+    // Clear selections
+    document.querySelectorAll('.topping-chip').forEach(t => t.classList.remove('selected', 'extra'));
     updateLimitMessage();
     document.getElementById('toppings-section').scrollIntoView({ behavior: 'smooth' });
 }
@@ -334,10 +336,10 @@ function toggleTopping(name, el) {
     const index = currentSelection.toppings.indexOf(name);
     if (index > -1) {
         currentSelection.toppings.splice(index, 1);
-        el.classList.remove('active');
+        el.classList.remove('selected', 'extra');
     } else {
         currentSelection.toppings.push(name);
-        el.classList.add('active');
+        el.classList.add('selected');
     }
     updateLimitMessage();
 }
@@ -412,7 +414,7 @@ function resetSelection(hideToppings) {
     currentSelection = { size: '', price: 0, max: 0, toppings: [], notes: '' };
     document.getElementById('order-notes').value = '';
     document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
-    document.querySelectorAll('.topping-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.topping-chip').forEach(t => t.classList.remove('selected', 'extra'));
     if(hideToppings) {
         document.getElementById('toppings-section').style.display = 'none';
         document.getElementById('notes-section').style.display = 'none';
