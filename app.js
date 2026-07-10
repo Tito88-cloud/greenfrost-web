@@ -16,11 +16,15 @@ let qrInterval = null;
 let pointsInterval = null;
 
 // --- ROUTER & VIEWS ---
-function switchView(viewId) {
+function switchView(viewId, pushState = true) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(`view-${viewId}`).classList.add('active');
     
     window.scrollTo(0, 0);
+
+    if (pushState && (!history.state || history.state.viewId !== viewId)) {
+        history.pushState({ viewId }, "", `#${viewId}`);
+    }
 
     if (viewId === 'fidelidad') {
         if (isAuthenticated()) showDashboard();
@@ -182,7 +186,10 @@ function renderPoints(puntosData) {
     container.innerHTML = '';
     
     BRANCHES.forEach(branch => {
-        const pts = puntosData[branch] || 0;
+        // Find matching key case-insensitively to avoid mismatches like 'pambiles' vs 'Local Pambiles'
+        const matchedKey = Object.keys(puntosData).find(k => branch.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(branch.toLowerCase()));
+        const pts = matchedKey ? puntosData[matchedKey] : 0;
+        
         const card = document.createElement('div');
         card.className = 'point-card';
         card.innerHTML = `
@@ -422,16 +429,20 @@ function resetSelection(hideToppings) {
 }
 
 function handleOrder() {
+    const btn = document.getElementById('btn-send-order');
     if (navigator.geolocation) {
-        const btn = document.getElementById('btn-send-order');
         btn.innerText = "Cargando ubicación...";
         navigator.geolocation.getCurrentPosition((pos) => {
             const loc = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
             sendDoubleWhatsApp(loc);
+            btn.innerText = "📲 ENVIAR PEDIDO POR WHATSAPP";
         }, () => {
-            alert("Necesitamos tu ubicación para el envío.");
-            btn.innerText = "🚀 ENVIAR PEDIDO POR WHATSAPP";
+            alert("No pudimos obtener tu ubicación automáticamente. Por favor, envíanos tu ubicación directamente por WhatsApp.");
+            sendDoubleWhatsApp("Ubicación pendiente (el cliente la enviará por WhatsApp)");
+            btn.innerText = "📲 ENVIAR PEDIDO POR WHATSAPP";
         });
+    } else {
+        sendDoubleWhatsApp("Ubicación pendiente (el cliente la enviará por WhatsApp)");
     }
 }
 
@@ -500,6 +511,19 @@ function manualRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     initOrders();
     
+    // Set initial history state for back button handling
+    if (!history.state) {
+        history.replaceState({ viewId: 'home' }, "", "#home");
+    }
+    
+    window.addEventListener('popstate', (e) => {
+        if (e.state && e.state.viewId) {
+            switchView(e.state.viewId, false);
+        } else {
+            switchView('home', false);
+        }
+    });
+
     const regForm = document.getElementById('register-form');
     if (regForm) regForm.addEventListener('submit', handleRegister);
     

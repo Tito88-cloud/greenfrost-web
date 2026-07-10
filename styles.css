@@ -272,8 +272,8 @@ body.dark-mode ::-webkit-scrollbar-thumb { background: var(--gray-600); }
 .scene-item {
   position: absolute;
   bottom: 20px;
-  width: 56px;
-  height: 56px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.18));
   z-index: 3;
