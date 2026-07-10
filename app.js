@@ -464,13 +464,12 @@ function sendDoubleWhatsApp(locationUrl) {
     msg += `🛵 *UBICACIÓN:* ${locationUrl}%0A`;
     msg += `%0A_Nota: El envío tiene un costo adicional._`;
 
-    window.open(`https://wa.me/${branchPhone}?text=${msg}`, '_blank');
-    
-    setTimeout(() => {
-        window.open(`https://wa.me/${MONITOR_NUMBER}?text=${msg}`, '_blank');
-    }, 1000);
+    // To avoid pop-up blockers, we open the monitor in a new tab, and redirect the current tab to the branch.
+    // Both happen synchronously during the click event.
+    window.open(`https://wa.me/${MONITOR_NUMBER}?text=${msg}`, '_blank');
+    window.location.href = `https://wa.me/${branchPhone}?text=${msg}`;
 
-    document.getElementById('btn-send-order').innerText = "🚀 ENVIAR PEDIDO POR WHATSAPP";
+    document.getElementById('btn-send-order').innerText = "📲 ENVIAR PEDIDO POR WHATSAPP";
 }
 
 function addAnother() {

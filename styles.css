@@ -467,13 +467,15 @@ body.dark-mode ::-webkit-scrollbar-thumb { background: var(--gray-600); }
 }
 
 .topping-category-title {
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
   color: var(--fuchsia);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin: var(--sp-5) 0 var(--sp-3);
-  padding-left: var(--sp-1);
+  margin: var(--sp-6) 0 var(--sp-3);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
 }
 
 .toppings-grid {
