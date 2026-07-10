@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Greenfrost — Heladería artesanal en Santo Domingo, Ecuador. Pide a domicilio y acumula puntos de fidelidad.">
+  <meta name="theme-color" content="#8dc63f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:title" content="Greenfrost — Heladería">
+  <meta property="og:description" content="Pide helados artesanales a domicilio en Santo Domingo, Ecuador.">
+  <meta property="og:type" content="website">
+  <title>Greenfrost — Heladería Artesanal</title>
+  <link rel="icon" href="images/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ═══ Toast notifications ═══ -->
+  <div id="toast-container"></div>
+
+  <!-- ═══ Loading overlay ═══ -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ═══ Confirm modal ═══ -->
+  <div id="confirm-modal" class="modal-overlay">
+    <div class="modal">
+      <h3 id="modal-title">Confirmar</h3>
+      <p id="modal-message">¿Estás seguro?</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modal-cancel">Cancelar</button>
+        <button class="btn btn-primary" id="modal-confirm">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB: HOME MENU
+       ══════════════════════════════════════════════════════════ -->
+  <div id="view-home" class="view active">
+    <div class="home-menu">
+      <img src="images/logo.png" alt="Greenfrost Logo" class="home-logo">
+      <h1 class="home-title">¡Bienvenido a Greenfrost!</h1>
+      
+      <a href="#" class="home-card" onclick="switchView('pedidos'); return false;">
+        <img src="images/delivery_icon.png" alt="Pedidos a Domicilio" class="home-card-icon">
+        <div class="home-card-title">Pedidos a Domicilio</div>
+        <div class="home-card-desc">Pide tus helados favoritos a la puerta de tu casa.</div>
+      </a>
+
+      <a href="#" class="home-card" onclick="switchView('fidelidad'); return false;">
+        <img src="images/loyalty_icon.png" alt="Puntos de Fidelidad" class="home-card-icon">
+        <div class="home-card-title">Puntos de Fidelidad</div>
+        <div class="home-card-desc">Acumula puntos y canjea por helados gratis.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB: PEDIDOS
+       ══════════════════════════════════════════════════════════ -->
+  <div id="view-pedidos" class="view">
+
+    <!-- Header / Back button -->
+    <div class="back-header">
+      <button class="btn-back" onclick="switchView('home')">
+        ⬅ Volver al inicio
+      </button>
+    </div>
+
+    <!-- ─── Delivery header scene ─── -->
+    <div class="delivery-header">
+      <h1>🍦 ¡PIDE A DOMICILIO!</h1>
+      <div class="road-scene">
+        <img src="./images/LOCAL-6.png" alt="Tienda" class="scene-item scene-store">
+        <img src="./images/MOTO-3.png" alt="Moto de entrega" class="scene-item scene-moto">
+        <img src="./images/CASA-2.png" alt="Tu casa" class="scene-item scene-house">
+        <div class="road"></div>
+      </div>
+    </div>
+
+    <div class="section-wrapper">
+
+      <!-- ─── Step 1: Choose size ─── -->
+      <h2 class="section-title">
+        <span class="step-badge">1</span>
+        Elige tu tamaño
+      </h2>
+      <p class="section-subtitle">Selecciona el tamaño de tu helado</p>
+
+      <div class="size-grid" id="size-grid">
+        <div class="size-card" data-size="pequeno" data-price="1.75" data-toppings="5" onclick="selectSize(this)">
+          <img src="./images/Pequeno-1.jpg" alt="Pequeño" class="size-bg" loading="lazy">
+          <div class="size-info">
+            <span class="size-name">Pequeño</span>
+            <span class="size-price">$1.75</span>
+            <span class="size-toppings-count">5 toppings incluidos</span>
+          </div>
+        </div>
+        <div class="size-card" data-size="mediano" data-price="2.25" data-toppings="6" onclick="selectSize(this)">
+          <img src="./images/Mediano.jpg" alt="Mediano" class="size-bg" loading="lazy">
+          <div class="size-info">
+            <span class="size-name">Mediano</span>
+            <span class="size-price">$2.25</span>
+            <span class="size-toppings-count">6 toppings incluidos</span>
+          </div>
+        </div>
+        <div class="size-card" data-size="grande" data-price="2.75" data-toppings="7" onclick="selectSize(this)">
+          <img src="./images/Grande-2.jpg" alt="Grande" class="size-bg" loading="lazy">
+          <div class="size-info">
+            <span class="size-name">Grande</span>
+            <span class="size-price">$2.75</span>
+            <span class="size-toppings-count">7 toppings incluidos</span>
+          </div>
+        </div>
+        <div class="size-card" data-size="extragrande" data-price="3.25" data-toppings="8" onclick="selectSize(this)">
+          <img src="./images/Extragrande.jpg" alt="Extra Grande" class="size-bg" loading="lazy">
+          <div class="size-info">
+            <span class="size-name">Extra Grande</span>
+            <span class="size-price">$3.25</span>
+            <span class="size-toppings-count">8 toppings incluidos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Step 2: Choose toppings ─── -->
+      <div id="toppings-section" class="toppings-section" style="display:none">
+        <h2 class="section-title">
+          <span class="step-badge">2</span>
+          Elige tus toppings
+        </h2>
+        <p class="section-subtitle" id="toppings-subtitle">Selecciona hasta <strong>5</strong> toppings incluidos</p>
+
+        <!-- Limit message -->
+        <div id="limit-message" class="limit-message ok" style="display:none">
+          <span id="limit-icon">✅</span>
+          <span id="limit-text"></span>
+        </div>
+
+        <!-- FRUTAS -->
+        <h3 class="topping-category-title">🍓 Frutas</h3>
+        <div class="toppings-grid" id="toppings-frutas"></div>
+
+        <!-- ADEREZOS -->
+        <h3 class="topping-category-title">🌰 Aderezos</h3>
+        <div class="toppings-grid" id="toppings-aderezos"></div>
+
+        <!-- SALSAS -->
+        <h3 class="topping-category-title">🍯 Salsas</h3>
+        <div class="toppings-grid" id="toppings-salsas"></div>
+      </div>
+
+      <!-- ─── Notes ─── -->
+      <div id="notes-section" class="notes-section" style="display:none">
+        <div class="form-group">
+          <label class="form-label" for="order-notes">📝 Instrucciones especiales</label>
+          <textarea class="form-textarea" id="order-notes" placeholder="Ej: Sin azúcar, extra chocolate, etc." rows="3"></textarea>
+        </div>
+        <button class="btn btn-primary btn-block" id="btn-add-to-cart" onclick="addToCart()">
+          🛒 Agregar al carrito
+        </button>
+      </div>
+
+      <!-- ─── Cart ─── -->
+      <div class="cart-section" id="cart-section" style="display:none">
+        <h2 class="section-title">
+          <span class="emoji">🛒</span>
+          Tu Carrito
+        </h2>
+
+        <div id="cart-items"></div>
+
+        <button class="add-another-btn" onclick="addAnother()">
+          ➕ Agregar otro helado
+        </button>
+
+        <!-- Cart total -->
+        <div class="cart-total" id="cart-total" style="display:none">
+          <span class="cart-total-label">Total estimado:</span>
+          <span class="cart-total-price" id="cart-total-price">$0.00</span>
+        </div>
+
+        <!-- Branch selector -->
+        <div class="form-group mt-6">
+          <label class="form-label" for="branch-select">📍 Sucursal más cercana</label>
+          <select class="form-select" id="branch-select">
+            <option value="" disabled selected>Selecciona una sucursal</option>
+            <option value="593990175310" data-name="Sector Pambiles">Sector Pambiles (Av Río Toachi y Abraham Calazacón ECU 911)</option>
+            <option value="593990175310" data-name="Sector Paseo Shopping">Sector Paseo Shopping (Av Quito y Río Chimbo)</option>
+            <option value="593982665633" data-name="Sector Centro">Sector Centro (Av 29 de Mayo y Cocaniguas)</option>
+            <option value="593982665633" data-name="Sector Rosales">Sector Rosales (Av Venezuela Calle del Colesterol)</option>
+          </select>
+        </div>
+
+        <!-- Delivery notice -->
+        <div class="delivery-notice">
+          <span>⚠️</span>
+          <span>El costo de envío se confirma por WhatsApp según tu ubicación. Enviaremos tu ubicación automáticamente.</span>
+        </div>
+
+        <!-- WhatsApp send button -->
+        <button class="btn btn-whatsapp btn-block mt-4" id="btn-send-order" onclick="handleOrder()">
+          📲 Enviar pedido por WhatsApp
+        </button>
+      </div>
+
+      <!-- Spacer at bottom -->
+      <div style="height: var(--sp-8)"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB: FIDELIDAD
+       ══════════════════════════════════════════════════════════ -->
+  <div id="view-fidelidad" class="view">
+
+    <!-- Header / Back button -->
+    <div class="back-header">
+      <button class="btn-back" onclick="switchView('home')">
+        ⬅ Volver al inicio
+      </button>
+    </div>
+
+    <!-- ─── Sub-view: Login ─── -->
+    <div id="fidelidad-login" class="sub-view">
+      <div class="auth-container">
+        <img src="images/logo.png" alt="Greenfrost" class="auth-logo">
+        <h2 class="auth-title">¡Bienvenido!</h2>
+        <p class="auth-subtitle">Inicia sesión para acumular puntos y canjear premios</p>
+
+        <form class="auth-form" id="login-form" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" for="login-user">👤 Usuario</label>
+            <input class="form-input" type="text" id="login-user" placeholder="Tu nombre de usuario" autocomplete="username" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-pass">🔒 Contraseña</label>
+            <div class="input-wrapper">
+              <input class="form-input" type="password" id="login-pass" placeholder="Tu contraseña" autocomplete="current-password" required>
+              <button type="button" class="input-toggle" onclick="togglePassword('login-pass', this)">👁️</button>
+            </div>
+          </div>
+          <div class="checkbox-group mb-6">
+            <input type="checkbox" id="remember-me" checked>
+            <label for="remember-me">Recordar sesión</label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="btn-login" onclick="handleLogin()">
+            Iniciar Sesión
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          ¿No tienes cuenta?
+          <button class="btn-link" onclick="showSubView('fidelidad-register')">Regístrate aquí</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Sub-view: Register ─── -->
+    <div id="fidelidad-register" class="sub-view" style="display:none">
+      <div class="auth-container">
+        <img src="images/logo.png" alt="Greenfrost" class="auth-logo">
+        <h2 class="auth-title">Crear cuenta</h2>
+        <p class="auth-subtitle">Únete al programa de fidelidad Greenfrost</p>
+
+        <form class="auth-form" id="register-form" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" for="reg-name">👤 Nombre completo</label>
+            <input class="form-input" type="text" id="reg-name" placeholder="Ej: Juan Pérez" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-user">📛 Usuario</label>
+            <input class="form-input" type="text" id="reg-user" placeholder="Elige un nombre de usuario" autocomplete="username" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-pass">🔒 Contraseña</label>
+            <div class="input-wrapper">
+              <input class="form-input" type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" required>
+              <button type="button" class="input-toggle" onclick="togglePassword('reg-pass', this)">👁️</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-pass2">🔒 Confirmar contraseña</label>
+            <div class="input-wrapper">
+              <input class="form-input" type="password" id="reg-pass2" placeholder="Repite tu contraseña" required>
+              <button type="button" class="input-toggle" onclick="togglePassword('reg-pass2', this)">👁️</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">📱 Teléfono (opcional)</label>
+            <input class="form-input" type="tel" id="reg-phone" placeholder="Ej: 0991234567">
+          </div>
+          <button type="submit" class="btn btn-accent btn-block" id="btn-register" onclick="handleRegister()">
+            Crear Cuenta
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          ¿Ya tienes cuenta?
+          <button class="btn-link" onclick="showSubView('fidelidad-login')">Inicia sesión</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Sub-view: Dashboard ─── -->
+    <div id="fidelidad-dashboard" class="sub-view" style="display:none">
+
+      <!-- Dashboard header -->
+      <div class="dashboard-header">
+        <div class="dashboard-greeting">
+          Hola, <span id="user-name">Usuario</span> 👋
+        </div>
+        <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+      </div>
+
+      <div class="section-wrapper">
+
+        <!-- ─── QR Code ─── -->
+        <div class="qr-section">
+          <h2 class="section-title" style="justify-content:center">
+            <span class="emoji">📱</span>
+            Tu Código QR
+          </h2>
+          <p class="section-subtitle text-center">Muestra este código al empleado para acumular puntos</p>
+
+          <div class="qr-wrapper">
+            <canvas id="qr-canvas"></canvas>
+            <div class="qr-timer">
+              Siguiente renovación: <span id="qr-countdown">5:00</span>
+            </div>
+            <p class="qr-note">🔒 El código se renueva cada 5 minutos por seguridad</p>
+          </div>
+        </div>
+
+        <!-- ─── Points ─── -->
+        <h2 class="section-title">
+          <span class="emoji">⭐</span>
+          Tus Puntos
+        </h2>
+        <div class="points-grid" id="points-grid">
+        <div class="points-grid" id="points-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- ─── Rewards ─── -->
+        <div class="rewards-section">
+          <h2 class="section-title">
+            <span class="emoji">🎁</span>
+            Mis Premios
+          </h2>
+
+          <div class="rewards-tabs">
+            <button class="rewards-tab active" data-rewards="pending" onclick="switchRewardsTab('pending')">Pendientes</button>
+            <button class="rewards-tab" data-rewards="delivered" onclick="switchRewardsTab('delivered')">Canjeados</button>
+          </div>
+
+          <div id="rewards-pending"></div>
+          <div id="rewards-delivered" style="display:none"></div>
+        </div>
+
+        <!-- ─── Refresh bar ─── -->
+        <div class="refresh-bar">
+          <span id="last-refresh">Última actualización: --</span>
+          <button class="btn-refresh" id="btn-refresh" onclick="manualRefresh()">🔄 Actualizar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ═══ External scripts ═══ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.1/qrcode.min.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+{
+  "name": "GF - Client Points",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Webhook",
+      "type": "@n8n/n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [ 250, 300 ],
+      "parameters": {
+        "path": "gf-client-points",
+        "httpMethod": "GET",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "2",
+      "name": "Read Puntos",
+      "type": "@n8n/n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [ 450, 300 ],
+      "parameters": {
+        "operation": "read",
+        "sheetName": "GF_Puntos"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Read Premios",
+      "type": "@n8n/n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [ 450, 500 ],
+      "parameters": {
+        "operation": "read",
+        "sheetName": "GF_Premios"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Combine",
+      "type": "@n8n/n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [ 650, 300 ],
+      "parameters": {
+        "jsCode": "const clienteId = $('Webhook').first().json.query.clienteId;\nconst allBranches = ['Local Rosales', 'Local Pambiles', 'Local 29', 'Local Quito'];\nconst puntos = {}; allBranches.forEach(b => puntos[b] = 0);\nconst premios = [];\n\nconst puntosRows = $('Read Puntos').all().map(i => i.json);\nconst premiosRows = $('Read Premios').all().map(i => i.json);\n\npuntosRows.forEach(r => {\n    if (r.clienteId === clienteId) {\n        if (puntos[r.sucursal] !== undefined) puntos[r.sucursal] += parseInt(r.puntos || 0);\n    }\n});\n\npremiosRows.forEach(r => {\n    if (r.clienteId === clienteId) {\n        premios.push(r);\n    }\n});\nreturn { json: { puntos, premios } };"
+      }
+    },
+    {
+      "id": "5",
+      "name": "Respond",
+      "type": "@n8n/n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [ 850, 300 ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json}}",
+        "options": {
+          "responseHeaders": {
+            "headers": {
+              "header": [
+                { "name": "Access-Control-Allow-Origin", "value": "*" },
+                { "name": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+                { "name": "Access-Control-Allow-Headers", "value": "Content-Type" }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [ [ { "node": "Read Puntos", "type": "main", "index": 0 } ] ] },
+    "Read Puntos": { "main": [ [ { "node": "Read Premios", "type": "main", "index": 0 } ] ] },
+    "Read Premios": { "main": [ [ { "node": "Combine", "type": "main", "index": 0 } ] ] },
+    "Combine": { "main": [ [ { "node": "Respond", "type": "main", "index": 0 } ] ] }
+  }
+}
