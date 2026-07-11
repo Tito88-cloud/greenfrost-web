@@ -1,0 +1,21 @@
+{
+  "name": "Greenfrost",
+  "short_name": "Greenfrost",
+  "description": "Heladería artesanal en Santo Domingo, Ecuador. Pide a domicilio y acumula puntos de fidelidad.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8dc63f",
+  "icons": [
+    {
+      "src": "images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

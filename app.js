@@ -538,3 +538,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// --- PWA INSTALLATION LOGIC ---
+let deferredPrompt;
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(registration => {
+        console.log('ServiceWorker registered:', registration);
+      })
+      .catch(error => {
+        console.log('ServiceWorker registration failed:', error);
+      });
+  });
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const installBtnContainer = document.getElementById('install-app-container');
+  if (installBtnContainer) {
+    installBtnContainer.style.display = 'block';
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const installAppBtn = document.getElementById('install-app-btn');
+  if (installAppBtn) {
+    installAppBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to the install prompt: ${outcome}`);
+        deferredPrompt = null;
+        document.getElementById('install-app-container').style.display = 'none';
+      }
+    });
+  }
+});
+
