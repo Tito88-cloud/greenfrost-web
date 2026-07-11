@@ -556,10 +556,6 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  const installBtnContainer = document.getElementById('install-app-container');
-  if (installBtnContainer) {
-    installBtnContainer.style.display = 'block';
-  }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -571,7 +567,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const { outcome } = await deferredPrompt.userChoice;
         console.log(`User response to the install prompt: ${outcome}`);
         deferredPrompt = null;
-        document.getElementById('install-app-container').style.display = 'none';
+      } else {
+        // Fallback para iOS o navegadores que no soportan el prompt automático
+        alert('Para instalar la App: \n\nEn iPhone (Safari): Toca el botón de Compartir y elige "Agregar a inicio".\n\nEn Android (Chrome): Toca los 3 puntos del menú y elige "Instalar aplicación" o "Agregar a la pantalla principal".');
       }
     });
   }
