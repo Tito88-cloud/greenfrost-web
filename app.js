@@ -558,20 +558,18 @@ window.addEventListener('beforeinstallprompt', (e) => {
   deferredPrompt = e;
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const installAppBtn = document.getElementById('install-app-btn');
-  if (installAppBtn) {
-    installAppBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log(`User response to the install prompt: ${outcome}`);
-        deferredPrompt = null;
-      } else {
-        // Fallback para iOS o navegadores que no soportan el prompt automático
-        alert('Para instalar la App: \n\nEn iPhone (Safari): Toca el botón de Compartir y elige "Agregar a inicio".\n\nEn Android (Chrome): Toca los 3 puntos del menú y elige "Instalar aplicación" o "Agregar a la pantalla principal".');
-      }
-    });
-  }
-});
+const installAppBtn = document.getElementById('install-app-btn');
+if (installAppBtn) {
+  installAppBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to the install prompt: ${outcome}`);
+      deferredPrompt = null;
+    } else {
+      // Fallback para iOS o navegadores que no soportan el prompt automático
+      alert('Para instalar la App: \n\nEn iPhone (Safari): Toca el botón de Compartir y elige "Agregar a inicio".\n\nEn Android (Chrome): Toca los 3 puntos del menú y elige "Instalar aplicación" o "Agregar a la pantalla principal".');
+    }
+  });
+}
 
