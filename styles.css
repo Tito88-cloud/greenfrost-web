@@ -1009,6 +1009,9 @@ body.dark-mode .limit-message.extra {
   box-shadow: var(--shadow-sm);
   text-align: center;
   transition: all var(--duration-normal) var(--ease-spring);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .point-card:hover {
@@ -1030,6 +1033,7 @@ body.dark-mode .limit-message.extra {
   font-weight: var(--fw-extrabold);
   color: var(--green);
   line-height: var(--lh-tight);
+  margin-top: auto;
 }
 
 .point-card-label {

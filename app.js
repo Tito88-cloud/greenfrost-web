@@ -185,19 +185,28 @@ function renderPoints(puntosData) {
     if(!container) return;
     container.innerHTML = '';
     
+    const branchAddresses = {
+        'Local Rosales': 'Av. Venezuela. Calle del Colesterol',
+        'Local Pambiles': 'Av. Rio Toachi y Abraham Calazacon. Sector ECU 911',
+        'Local 29': 'Av. 29 de Mayo y Cocaniguas. Sector Parque Central',
+        'Local Quito': 'Av. Quito y Rio Chimbo. Sector Banco Bolivariano'
+    };
+
     BRANCHES.forEach(branch => {
         // Find matching key case-insensitively to avoid mismatches like 'pambiles' vs 'Local Pambiles'
         const matchedKey = Object.keys(puntosData).find(k => branch.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(branch.toLowerCase()));
         const pts = matchedKey ? puntosData[matchedKey] : 0;
+        const address = branchAddresses[branch] || '';
         
         const card = document.createElement('div');
         card.className = 'point-card';
         card.innerHTML = `
-            <h4>${branch}</h4>
-            <div class="points-val">${pts} pts</div>
+            <div class="point-card-branch" style="margin-bottom: 5px;">${branch}</div>
+            <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-bottom: 15px;">${address}</div>
+            <div class="point-card-value">${pts} pts</div>
             ${pts >= POINTS_PER_REWARD 
-                ? `<button class="btn-redeem" onclick="redeemReward('${branch}')">🎁 Canjear Premio</button>`
-                : `<div class="points-missing">Faltan ${POINTS_PER_REWARD - pts} puntos</div>`
+                ? `<button class="btn-redeem" onclick="redeemReward('${branch}')" style="margin-top: 10px;">🎁 Canjear Premio</button>`
+                : `<div class="point-card-action remaining" style="margin-top: 10px;">Faltan ${POINTS_PER_REWARD - pts} puntos</div>`
             }
         `;
         container.appendChild(card);
@@ -215,7 +224,9 @@ function renderRewards(premiosData) {
     let hasPending = false;
     let hasDelivered = false;
 
-    premiosData.forEach(p => {
+    const sortedPremios = premiosData.slice().reverse();
+
+    sortedPremios.forEach(p => {
         const div = document.createElement('div');
         div.className = 'reward-item ' + p.estado;
         div.innerHTML = `
