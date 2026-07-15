@@ -323,7 +323,7 @@ function initOrders() {
             toppings[cat].forEach(t => {
                 const div = document.createElement('div');
                 div.className = 'topping-chip';
-                div.innerHTML = `<span class="chip-emoji">🍦</span> ${t}`;
+                div.innerHTML = `${t}`;
                 div.onclick = () => toggleTopping(t, div);
                 container.appendChild(div);
             });
@@ -583,4 +583,37 @@ if (installAppBtn) {
     }
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Cookie and Privacy Policy Logic
+  const cookieBanner = document.getElementById('cookie-banner');
+  const btnAcceptCookies = document.getElementById('btn-accept-cookies');
+  const linkPrivacy = document.getElementById('link-privacy-policy');
+  const modalPrivacy = document.getElementById('privacy-modal');
+  const btnClosePrivacy = document.getElementById('btn-close-privacy');
+
+  if (cookieBanner && !localStorage.getItem('cookiesAccepted')) {
+    setTimeout(() => cookieBanner.classList.add('visible'), 1500);
+  }
+
+  if (btnAcceptCookies) {
+    btnAcceptCookies.addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', 'true');
+      cookieBanner.classList.remove('visible');
+    });
+  }
+
+  if (linkPrivacy && modalPrivacy) {
+    linkPrivacy.addEventListener('click', (e) => {
+      e.preventDefault();
+      modalPrivacy.classList.add('active');
+    });
+  }
+
+  if (btnClosePrivacy && modalPrivacy) {
+    btnClosePrivacy.addEventListener('click', () => {
+      modalPrivacy.classList.remove('active');
+    });
+  }
+});
 
