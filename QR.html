@@ -53,8 +53,13 @@
         }
         @media print {
             .print-btn { display: none; }
-            body { background: white; }
+            body { 
+                background: white; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+            }
             .qr-container { box-shadow: none; }
+            h2 { color: #8dc63f !important; }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
