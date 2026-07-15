@@ -62,8 +62,8 @@
 <body>
 
     <div class="qr-container">
-        <img src="images/logo.png" alt="Greenfrost Logo" style="max-width: 250px; margin-bottom: 10px;">
-        <h2 style="color: #4b5563; font-size: 1.2rem; margin-bottom: 30px; font-weight: 600;">Descarga nuestra App Web para pedir a domicilio y acumular puntos</h2>
+        <img src="images/logo_qr.png" alt="Greenfrost Logo" style="max-height: 60px; margin-bottom: 10px;">
+        <h2 style="color: #4b5563; font-size: 1.1rem; margin-bottom: 25px; font-weight: 600; max-width: 400px; margin-left: auto; margin-right: auto;">Descarga nuestra App Web para pedir a domicilio y acumular puntos</h2>
         <div id="qrcode"></div>
     </div>
     
@@ -75,8 +75,8 @@
         
         new QRCode(document.getElementById("qrcode"), {
             text: url,
-            width: 300,
-            height: 300,
+            width: 450,
+            height: 450,
             colorDark : "#000000",
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.H
