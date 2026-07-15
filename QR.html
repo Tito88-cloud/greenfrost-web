@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código QR Greenfrost</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9fafb;
+            text-align: center;
+        }
+        .qr-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8dc63f;
+            margin-bottom: 5px;
+        }
+        p {
+            color: #4b5563;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+        #qrcode {
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
+        .print-btn {
+            margin-top: 30px;
+            background: #e4007f;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .print-btn:hover {
+            transform: scale(1.05);
+        }
+        @media print {
+            .print-btn { display: none; }
+            body { background: white; }
+            .qr-container { box-shadow: none; }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+    <div class="qr-container">
+        <h1>🍨 Escanea para pedir</h1>
+        <p>Tu helado favorito en minutos</p>
+        <div id="qrcode"></div>
+    </div>
+    
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir Código QR</button>
+
+    <script>
+        // Genera el código QR apuntando a la URL principal del sitio web
+        const url = window.location.origin + window.location.pathname.replace('QR.html', '');
+        
+        new QRCode(document.getElementById("qrcode"), {
+            text: url,
+            width: 300,
+            height: 300,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    </script>
+</body>
+</html>

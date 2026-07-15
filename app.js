@@ -351,13 +351,22 @@ function selectSize(el) {
 }
 
 function toggleTopping(name, el) {
-    const index = currentSelection.toppings.indexOf(name);
-    if (index > -1) {
-        currentSelection.toppings.splice(index, 1);
-        el.classList.remove('selected', 'extra');
-    } else {
+    let count = currentSelection.toppings.filter(t => t === name).length;
+    
+    if (count === 0) {
         currentSelection.toppings.push(name);
         el.classList.add('selected');
+        el.setAttribute('data-count', '1');
+    } else if (count === 1) {
+        currentSelection.toppings.push(name);
+        el.classList.add('double-selected');
+        el.setAttribute('data-count', '2');
+    } else {
+        // Deselect on 3rd click
+        currentSelection.toppings = currentSelection.toppings.filter(t => t !== name);
+        el.classList.remove('selected', 'extra', 'double-selected');
+        el.removeAttribute('data-count');
+        showToast('El topping puede ser seleccionado máximo 2 veces', 'warn');
     }
     updateLimitMessage();
 }
@@ -411,7 +420,7 @@ function renderCart() {
         div.className = 'cart-item';
         div.innerHTML = `<span class="remove-item" onclick="removeItem(${index})">❌ Quitar</span>
             <strong>Helado ${item.size}</strong> - $${item.finalPrice.toFixed(2)}<br>
-            <small>${item.toppings.join(', ')}</small> 
+            <small>${formatToppings(item.toppings)}</small> 
             ${item.extras > 0 ? `<br><small style="color:var(--fuchsia-frost)">+${item.extras} Toppings extras</small>` : ''}
             ${item.notes ? `<br><span class="cart-notes">📝 ${item.notes}</span>` : ''}`;
         container.appendChild(div);
@@ -465,7 +474,7 @@ function sendDoubleWhatsApp(locationUrl) {
     let msg = `*NUEVO PEDIDO GREENFROST*%0A📍 *Sucursal:* ${branchName}%0A%0A`;
     cart.forEach((item, i) => {
         msg += `*${i+1}. Helado ${item.size}* ($${item.finalPrice.toFixed(2)})%0A`;
-        msg += `Toppings: ${item.toppings.join(', ')}%0A`;
+        msg += `Toppings: ${formatToppings(item.toppings)}%0A`;
         if(item.notes) msg += `📝 Notas: ${item.notes}%0A`;
         msg += `%0A`;
     });
