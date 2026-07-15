@@ -410,6 +410,12 @@ function addToCart() {
     document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
 }
 
+function formatToppings(toppingsArray) {
+    const counts = {};
+    toppingsArray.forEach(t => counts[t] = (counts[t] || 0) + 1);
+    return Object.entries(counts).map(([t, c]) => c > 1 ? `${t} x${c}` : t).join(', ');
+}
+
 function renderCart() {
     const container = document.getElementById('cart-items');
     container.innerHTML = "";
@@ -441,7 +447,10 @@ function resetSelection(hideToppings) {
     currentSelection = { size: '', price: 0, max: 0, toppings: [], notes: '' };
     document.getElementById('order-notes').value = '';
     document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
-    document.querySelectorAll('.topping-chip').forEach(t => t.classList.remove('selected', 'extra'));
+    document.querySelectorAll('.topping-chip').forEach(t => {
+        t.classList.remove('selected', 'extra', 'double-selected');
+        t.removeAttribute('data-count');
+    });
     if(hideToppings) {
         document.getElementById('toppings-section').style.display = 'none';
         document.getElementById('notes-section').style.display = 'none';
