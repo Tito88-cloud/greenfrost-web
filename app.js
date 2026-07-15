@@ -10,7 +10,6 @@ const BRANCHES = ['Local Rosales', 'Local Pambiles', 'Local 29', 'Local Quito'];
 const POINTS_PER_REWARD = 10;
 const QR_REFRESH_INTERVAL = 5 * 60 * 1000;
 const POINTS_POLL_INTERVAL = 30 * 1000;
-const MONITOR_NUMBER = '593969764774';
 
 let qrInterval = null;
 let pointsInterval = null;
@@ -493,9 +492,8 @@ function sendDoubleWhatsApp(locationUrl) {
     msg += `🛵 *UBICACIÓN:* ${locationUrl}%0A`;
     msg += `%0A_Nota: El envío tiene un costo adicional._`;
 
-    // To avoid pop-up blockers, we open the monitor in a new tab, and redirect the current tab to the branch.
-    // Both happen synchronously during the click event.
-    window.open(`https://wa.me/${MONITOR_NUMBER}?text=${msg}`, '_blank');
+    // Redirect the current tab to the branch WhatsApp.
+
     window.location.href = `https://wa.me/${branchPhone}?text=${msg}`;
 
     document.getElementById('btn-send-order').innerText = "📲 ENVIAR PEDIDO POR WHATSAPP";
