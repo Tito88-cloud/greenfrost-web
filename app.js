@@ -458,45 +458,72 @@ function resetSelection(hideToppings) {
 
 function handleOrder() {
     const btn = document.getElementById('btn-send-order');
+    const nameInput = document.getElementById('customer-name').value.trim();
+    const phoneInput = document.getElementById('customer-phone').value.trim();
+    
+    if (!nameInput) {
+        showToast("Por favor, ingresa tu nombre completo", "warn");
+        return;
+    }
+    if (!phoneInput) {
+        showToast("Por favor, ingresa tu teléfono", "warn");
+        return;
+    }
+
     if (navigator.geolocation) {
         btn.innerText = "Cargando ubicación...";
         navigator.geolocation.getCurrentPosition((pos) => {
             const loc = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            sendDoubleWhatsApp(loc);
+            sendDoubleWhatsApp(loc, nameInput, phoneInput);
             btn.innerText = "📲 ENVIAR PEDIDO POR WHATSAPP";
         }, () => {
             alert("No pudimos obtener tu ubicación automáticamente. Por favor, envíanos tu ubicación directamente por WhatsApp.");
-            sendDoubleWhatsApp("Ubicación pendiente (el cliente la enviará por WhatsApp)");
+            sendDoubleWhatsApp("Ubicación pendiente (el cliente la enviará por WhatsApp)", nameInput, phoneInput);
             btn.innerText = "📲 ENVIAR PEDIDO POR WHATSAPP";
         });
     } else {
-        sendDoubleWhatsApp("Ubicación pendiente (el cliente la enviará por WhatsApp)");
+        sendDoubleWhatsApp("Ubicación pendiente (el cliente la enviará por WhatsApp)", nameInput, phoneInput);
     }
 }
 
-function sendDoubleWhatsApp(locationUrl) {
+function getCartSummary() {
+    const counts = {};
+    cart.forEach(item => {
+        counts[item.size] = (counts[item.size] || 0) + 1;
+    });
+    const parts = Object.entries(counts).map(([size, count]) => `${count} Helado ${size}`);
+    if (parts.length > 1) {
+        const last = parts.pop();
+        return parts.join(', ') + ' y ' + last;
+    }
+    return parts[0];
+}
+
+function sendDoubleWhatsApp(locationUrl, customerName, customerPhone) {
     const branchSelect = document.getElementById('branch-select');
     const branchPhone = branchSelect.value;
     const branchName = branchSelect.options[branchSelect.selectedIndex].text;
     
-    let msg = `*NUEVO PEDIDO GREENFROST*%0A📍 *Sucursal:* ${branchName}%0A%0A`;
-    cart.forEach((item, i) => {
-        msg += `*${i+1}. Helado ${item.size}* ($${item.finalPrice.toFixed(2)})%0A`;
+    let msg = `_NUEVO PEDIDO GREENFROST_%0A%0A`;
+    msg += `*Sucursal*: ${branchName}%0A%0A`;
+    msg += `*Cliente*: ${customerName}%0A`;
+    msg += `*Teléfono*: ${customerPhone}%0A%0A`;
+    
+    msg += `*Pedido:* ${getCartSummary()}%0A%0A`;
+
+    cart.forEach((item) => {
+        msg += `- Helado ${item.size} ($${item.finalPrice.toFixed(2)})%0A%0A`;
         msg += `Toppings: ${formatToppings(item.toppings)}%0A`;
         if(item.notes) msg += `📝 Notas: ${item.notes}%0A`;
         msg += `%0A`;
     });
     
     let total = cart.reduce((sum, item) => sum + item.finalPrice, 0);
-    msg += `*TOTAL: $${total.toFixed(2)}*%0A`;
-    msg += `🛵 *UBICACIÓN:* ${locationUrl}%0A`;
-    msg += `%0A_Nota: El envío tiene un costo adicional._`;
-
-    // Redirect the current tab to the branch WhatsApp.
+    msg += `*TOTAL: $${total.toFixed(2)}*%0A%0A`;
+    msg += `UBICACIÓN DE ENTREGA ${locationUrl}%0A%0A`;
+    msg += `_Nota: El envío tiene un costo adicional $2 - $3 (dentro del perímetro urbano). El motorizado se pondrá en contacto con el cliente para darle el valor específico_`;
 
     window.location.href = `https://wa.me/${branchPhone}?text=${msg}`;
-
-    document.getElementById('btn-send-order').innerText = "📲 ENVIAR PEDIDO POR WHATSAPP";
 }
 
 function addAnother() {
@@ -536,6 +563,14 @@ function manualRefresh() {
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
     initOrders();
+    
+    if (isAuthenticated()) {
+        const session = getSession();
+        if (session && session.name) {
+            const customerNameEl = document.getElementById('customer-name');
+            if (customerNameEl) customerNameEl.value = session.name;
+        }
+    }
     
     // Set initial history state for back button handling
     if (!history.state) {
