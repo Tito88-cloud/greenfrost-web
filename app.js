@@ -100,6 +100,7 @@ async function handleLogin(event) {
             saveSession({
                 clienteId: data.clienteId,
                 nombre: data.nombre,
+                telefono: usuario,
                 hmacSecret: data.hmacSecret || "12345"
             });
             document.getElementById('login-form').reset();
@@ -737,9 +738,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (isAuthenticated()) {
         const session = getSession();
-        if (session && session.name) {
+        if (session) {
             const customerNameEl = document.getElementById('customer-name');
-            if (customerNameEl) customerNameEl.value = session.name;
+            if (customerNameEl && session.nombre) customerNameEl.value = session.nombre;
+            
+            const customerPhoneEl = document.getElementById('customer-phone');
+            if (customerPhoneEl && session.telefono) customerPhoneEl.value = session.telefono;
         }
     }
     
