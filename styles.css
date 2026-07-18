@@ -1673,3 +1673,38 @@ body.dark-mode .skeleton {
 .cookie-banner { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card); color: var(--text-primary); padding: var(--sp-4); box-shadow: 0 -4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: var(--sp-3); z-index: 1000; transform: translateY(100%); transition: transform 0.3s ease; text-align: left; font-size: 0.85rem; line-height: 1.4; border-top: 1px solid var(--border-color); }
 .cookie-banner.visible { transform: translateY(0); }
 @media (min-width: 768px) { .cookie-banner { flex-direction: row; justify-content: space-between; align-items: center; font-size: 0.9rem; } .cookie-banner p { margin-right: var(--sp-4); } }
+.qty-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 5px;
+  border-radius: 20px;
+  pointer-events: auto; /* allows click even if card has logic */
+}
+.qty-btn {
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s;
+}
+.qty-btn:active {
+  transform: scale(0.9);
+}
+.qty-val {
+  font-weight: 700;
+  font-size: 1.1rem;
+  min-width: 20px;
+  text-align: center;
+}

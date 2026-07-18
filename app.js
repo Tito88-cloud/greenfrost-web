@@ -313,6 +313,8 @@ const toppings = {
 };
 
 let cart = [];
+let pendingIceCreams = [];
+let currentConfigIndex = 0;
 let currentSelection = { size: '', price: 0, max: 0, toppings: [], notes: '' };
 
 function initOrders() {
@@ -330,22 +332,142 @@ function initOrders() {
     }
 }
 
-function selectSize(el) {
-    const name = el.dataset.size;
-    const p = parseFloat(el.dataset.price);
-    const limit = parseInt(el.dataset.toppings);
-    currentSelection = { size: name, price: p, max: limit, toppings: [], notes: '' };
-    document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('order-notes').value = '';
+function updateQty(btn, delta) {
+    event.stopPropagation();
+    const valSpan = btn.parentElement.querySelector('.qty-val');
+    let current = parseInt(valSpan.dataset.qty);
+    let newVal = current + delta;
+    if (newVal < 0) newVal = 0;
+    
+    valSpan.dataset.qty = newVal;
+    valSpan.innerText = newVal;
+    
+    checkStartConfigBtn();
+}
+
+function checkStartConfigBtn() {
+    let total = 0;
+    document.querySelectorAll('.qty-val').forEach(span => {
+        total += parseInt(span.dataset.qty);
+    });
+    const btn = document.getElementById('btn-start-config');
+    btn.style.display = total > 0 ? 'block' : 'none';
+}
+
+function startConfigurationFlow() {
+    pendingIceCreams = [];
+    currentConfigIndex = 0;
+    cart = []; // clear cart when starting a new batch
+    
+    document.querySelectorAll('.size-card').forEach(card => {
+        const qty = parseInt(card.querySelector('.qty-val').dataset.qty);
+        if (qty > 0) {
+            const sizeName = card.querySelector('.size-name').innerText;
+            const sizeId = card.dataset.size;
+            const price = parseFloat(card.dataset.price);
+            const maxToppings = parseInt(card.dataset.toppings);
+            
+            for (let i = 0; i < qty; i++) {
+                pendingIceCreams.push({
+                    sizeId: sizeId,
+                    sizeName: sizeName,
+                    price: price,
+                    max: maxToppings,
+                    toppings: [],
+                    notes: '',
+                    indexInSize: i + 1
+                });
+            }
+        }
+    });
+    
+    if (pendingIceCreams.length === 0) return;
+    
+    document.getElementById('size-grid').style.display = 'none';
+    document.getElementById('btn-start-config').style.display = 'none';
+    const subtitle = document.querySelector('.section-subtitle');
+    if (subtitle) subtitle.style.display = 'none';
+    
+    renderNextIceCreamConfig();
+}
+
+function renderNextIceCreamConfig() {
+    if (currentConfigIndex >= pendingIceCreams.length) {
+        // Finished all configurations
+        document.getElementById('toppings-section').style.display = 'none';
+        document.getElementById('cart-section').style.display = 'block';
+        document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
+        return;
+    }
+    
+    const iceCream = pendingIceCreams[currentConfigIndex];
+    currentSelection = { 
+        size: iceCream.sizeName, 
+        price: iceCream.price, 
+        max: iceCream.max, 
+        toppings: [...iceCream.toppings], 
+        notes: iceCream.notes 
+    };
+    
+    document.getElementById('toppings-main-title').innerHTML = `<span class="step-badge">2</span> Toppings para Helado ${iceCream.sizeName} #${iceCream.indexInSize}`;
+    document.getElementById('toppings-subtitle').innerHTML = `Selecciona hasta <strong>${iceCream.max}</strong> toppings incluidos`;
+    
+    document.getElementById('order-notes').value = iceCream.notes;
+    
     document.getElementById('toppings-section').style.display = 'block';
-    document.getElementById('notes-section').style.display = 'block';
     
-    document.getElementById('toppings-subtitle').innerHTML = `Selecciona hasta <strong>${limit}</strong> toppings incluidos`;
+    // Clear selections visually
+    document.querySelectorAll('.topping-chip').forEach(t => {
+        t.classList.remove('selected', 'extra', 'double-selected');
+        t.removeAttribute('data-count');
+    });
     
-    // Clear selections
-    document.querySelectorAll('.topping-chip').forEach(t => t.classList.remove('selected', 'extra'));
+    // If it has pre-filled toppings (from copy feature), visually select them
+    iceCream.toppings.forEach(tName => {
+        const chip = Array.from(document.querySelectorAll('.topping-chip')).find(el => el.innerText === tName);
+        if (chip) {
+            let count = currentSelection.toppings.filter(t => t === tName).length;
+            if (count === 1) {
+                chip.classList.add('selected');
+                chip.setAttribute('data-count', '1');
+            } else if (count >= 2) {
+                chip.classList.add('double-selected');
+                chip.setAttribute('data-count', '2');
+            }
+        }
+    });
+    
     updateLimitMessage();
+    
+    const nextBtn = document.getElementById('btn-next-config');
+    if (currentConfigIndex === pendingIceCreams.length - 1) {
+        nextBtn.innerHTML = "Terminar y ver carrito 🛒";
+    } else {
+        nextBtn.innerHTML = "Siguiente Helado ➡️";
+    }
+    
+    // Copy toppings feature logic
+    const sameSizeIceCreams = pendingIceCreams.filter((ic, idx) => idx > currentConfigIndex && ic.sizeId === iceCream.sizeId);
+    const copyContainer = document.getElementById('copy-toppings-container');
+    const copyList = document.getElementById('copy-toppings-list');
+    
+    if (sameSizeIceCreams.length > 0) {
+        copyContainer.style.display = 'block';
+        copyList.innerHTML = '';
+        sameSizeIceCreams.forEach((ic) => {
+            const targetIdx = pendingIceCreams.indexOf(ic);
+            const label = document.createElement('label');
+            label.style.display = 'flex';
+            label.style.alignItems = 'center';
+            label.style.gap = '8px';
+            label.style.cursor = 'pointer';
+            label.innerHTML = `<input type="checkbox" class="copy-target-cb" data-target-index="${targetIdx}" style="width:18px;height:18px;"> <span>Aplicar a Helado ${ic.sizeName} #${ic.indexInSize}</span>`;
+            copyList.appendChild(label);
+        });
+    } else {
+        copyContainer.style.display = 'none';
+    }
+    
     document.getElementById('toppings-section').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -390,23 +512,33 @@ function updateLimitMessage() {
     }
 }
 
-function addToCart() {
-    if (!currentSelection.size) return;
+function saveCurrentIceCreamConfig() {
     const notes = document.getElementById('order-notes').value;
     const extrasCount = Math.max(0, currentSelection.toppings.length - currentSelection.max);
     const finalPrice = currentSelection.price + (extrasCount * 0.25);
     
-    cart.push({
-        ...currentSelection, 
-        toppings: [...currentSelection.toppings], 
-        finalPrice: finalPrice, 
+    const configToSave = {
+        ...currentSelection,
+        toppings: [...currentSelection.toppings],
+        finalPrice: finalPrice,
         extras: extrasCount,
         notes: notes
-    });
+    };
     
+    cart.push(configToSave);
+    
+    const copyContainer = document.getElementById('copy-toppings-container');
+    if (copyContainer.style.display !== 'none') {
+        const checkboxes = document.querySelectorAll('.copy-target-cb:checked');
+        checkboxes.forEach(cb => {
+            const targetIdx = parseInt(cb.dataset.targetIndex);
+            pendingIceCreams[targetIdx].toppings = [...currentSelection.toppings];
+        });
+    }
+    
+    currentConfigIndex++;
     renderCart();
-    resetSelection(false);
-    document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' });
+    renderNextIceCreamConfig();
 }
 
 function formatToppings(toppingsArray) {
@@ -442,17 +574,29 @@ function removeItem(index) {
     if(cart.length === 0) resetSelection(true);
 }
 
-function resetSelection(hideToppings) {
+function resetSelection(fullReset) {
     currentSelection = { size: '', price: 0, max: 0, toppings: [], notes: '' };
     document.getElementById('order-notes').value = '';
-    document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
+    
     document.querySelectorAll('.topping-chip').forEach(t => {
         t.classList.remove('selected', 'extra', 'double-selected');
         t.removeAttribute('data-count');
     });
-    if(hideToppings) {
+    
+    if(fullReset) {
         document.getElementById('toppings-section').style.display = 'none';
-        document.getElementById('notes-section').style.display = 'none';
+        document.getElementById('cart-section').style.display = 'none';
+        
+        // Reset quantities
+        document.querySelectorAll('.qty-val').forEach(span => {
+            span.dataset.qty = 0;
+            span.innerText = 0;
+        });
+        checkStartConfigBtn();
+        
+        document.getElementById('size-grid').style.display = 'grid';
+        const subtitle = document.querySelector('.section-subtitle');
+        if (subtitle) subtitle.style.display = 'block';
     }
 }
 
