@@ -382,7 +382,6 @@ function checkStartConfigBtn() {
 function startConfigurationFlow() {
     pendingIceCreams = [];
     currentConfigIndex = 0;
-    cart = []; // clear cart when starting a new batch
     
     document.querySelectorAll('.size-item').forEach(item => {
         const qtySpan = item.querySelector('.qty-val');
