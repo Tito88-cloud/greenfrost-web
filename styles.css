@@ -357,6 +357,7 @@ body.dark-mode ::-webkit-scrollbar-thumb { background: var(--gray-600); }
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--sp-3);
+  scroll-margin-top: 100px;
 }
 
 .size-card {
@@ -471,6 +472,7 @@ body.dark-mode ::-webkit-scrollbar-thumb { background: var(--gray-600); }
    ═══════════════════════════════════════════════════════════ */
 .toppings-section {
   margin-top: var(--sp-6);
+  scroll-margin-top: 100px;
 }
 
 .topping-category-title {
@@ -794,6 +796,7 @@ body.dark-mode .limit-message.extra {
   margin-top: var(--sp-8);
   padding-top: var(--sp-6);
   border-top: 2px dashed var(--border-color);
+  scroll-margin-top: 100px;
 }
 
 .cart-item {
