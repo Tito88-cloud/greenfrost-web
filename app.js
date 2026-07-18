@@ -347,11 +347,36 @@ function updateQty(btn, delta) {
 
 function checkStartConfigBtn() {
     let total = 0;
-    document.querySelectorAll('.qty-val').forEach(span => {
-        total += parseInt(span.dataset.qty);
+    let parts = [];
+    document.querySelectorAll('.size-item').forEach(item => {
+        let q = parseInt(item.querySelector('.qty-val').dataset.qty);
+        total += q;
+        if(q > 0) {
+            let name = item.querySelector('.size-name').innerText;
+            let pluralName = q > 1 ? name + 's' : name;
+            parts.push(q + ' ' + pluralName);
+        }
     });
+    
     const btn = document.getElementById('btn-start-config');
-    btn.style.display = total > 0 ? 'block' : 'none';
+    const summary = document.getElementById('qty-summary');
+    
+    if (total > 0) {
+        btn.style.display = 'block';
+        summary.style.display = 'block';
+        
+        let summaryText = '';
+        if (parts.length > 1) {
+            const last = parts.pop();
+            summaryText = parts.join(', ') + ' y ' + last;
+        } else {
+            summaryText = parts[0];
+        }
+        summary.innerHTML = `🛒 Has elegido <strong>${summaryText}</strong>`;
+    } else {
+        btn.style.display = 'none';
+        summary.style.display = 'none';
+    }
 }
 
 function startConfigurationFlow() {
@@ -359,9 +384,12 @@ function startConfigurationFlow() {
     currentConfigIndex = 0;
     cart = []; // clear cart when starting a new batch
     
-    document.querySelectorAll('.size-card').forEach(card => {
-        const qty = parseInt(card.querySelector('.qty-val').dataset.qty);
+    document.querySelectorAll('.size-item').forEach(item => {
+        const qtySpan = item.querySelector('.qty-val');
+        if (!qtySpan) return;
+        const qty = parseInt(qtySpan.dataset.qty);
         if (qty > 0) {
+            const card = item.querySelector('.size-card');
             const sizeName = card.querySelector('.size-name').innerText;
             const sizeId = card.dataset.size;
             const price = parseFloat(card.dataset.price);
@@ -441,7 +469,7 @@ function renderNextIceCreamConfig() {
     
     const nextBtn = document.getElementById('btn-next-config');
     if (currentConfigIndex === pendingIceCreams.length - 1) {
-        nextBtn.innerHTML = "Terminar y ver carrito 🛒";
+        nextBtn.innerHTML = `Terminar y ver carrito <span style="text-shadow: 0 0 4px white, 0 0 8px white;">🛒</span>`;
     } else {
         nextBtn.innerHTML = "Siguiente Helado ➡️";
     }

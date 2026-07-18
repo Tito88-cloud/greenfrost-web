@@ -94,67 +94,79 @@
 
     <div class="section-wrapper">
 
-      <!-- ─── Step 1: Choose size ─── -->
+      <!-- 🍨 Step 1: Choose size 🍨 -->
       <h2 class="section-title">
         <span class="step-badge">1</span>
-        Elige tu tamaño
+        Elige cuántos helados de cada tamaño quieres
       </h2>
-      <p class="section-subtitle">Selecciona el tamaño de tu helado</p>
 
       <div class="size-grid" id="size-grid">
-        <div class="size-card" data-size="pequeno" data-price="1.75" data-toppings="5">
-          <img src="images/helado_pequeno.png?v=17" alt="Pequeño" class="size-bg" loading="lazy">
-          <div class="size-info">
-            <span class="size-name">Pequeño</span>
-            <span class="size-price">$1.75</span>
-            <span class="size-toppings-count">5 toppings incluidos</span>
-            <div class="qty-control mt-2">
-              <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
-              <span class="qty-val" data-qty="0">0</span>
-              <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+        <div class="size-item">
+          <div class="size-card" data-size="pequeno" data-price="1.75" data-toppings="5">
+            <img src="images/helado_pequeno.png?v=17" alt="Pequeño" class="size-bg" loading="lazy">
+            <div class="size-info">
+              <span class="size-name">Pequeño</span>
+              <span class="size-price">$1.75</span>
+              <span class="size-toppings-count">5 toppings incluidos</span>
             </div>
           </div>
-        </div>
-        <div class="size-card" data-size="mediano" data-price="2.25" data-toppings="6">
-          <img src="images/helado_mediano.png?v=17" alt="Mediano" class="size-bg" loading="lazy">
-          <div class="size-info">
-            <span class="size-name">Mediano</span>
-            <span class="size-price">$2.25</span>
-            <span class="size-toppings-count">6 toppings incluidos</span>
-            <div class="qty-control mt-2">
-              <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
-              <span class="qty-val" data-qty="0">0</span>
-              <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
-            </div>
+          <div class="qty-control mt-2">
+            <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+            <span class="qty-val" data-qty="0">0</span>
+            <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
           </div>
         </div>
-        <div class="size-card" data-size="grande" data-price="2.75" data-toppings="7">
-          <img src="images/helado_grande.png?v=17" alt="Grande" class="size-bg" loading="lazy">
-          <div class="size-info">
-            <span class="size-name">Grande</span>
-            <span class="size-price">$2.75</span>
-            <span class="size-toppings-count">7 toppings incluidos</span>
-            <div class="qty-control mt-2">
-              <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
-              <span class="qty-val" data-qty="0">0</span>
-              <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+        
+        <div class="size-item">
+          <div class="size-card" data-size="mediano" data-price="2.25" data-toppings="6">
+            <img src="images/helado_mediano.png?v=17" alt="Mediano" class="size-bg" loading="lazy">
+            <div class="size-info">
+              <span class="size-name">Mediano</span>
+              <span class="size-price">$2.25</span>
+              <span class="size-toppings-count">6 toppings incluidos</span>
             </div>
           </div>
+          <div class="qty-control mt-2">
+            <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+            <span class="qty-val" data-qty="0">0</span>
+            <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+          </div>
         </div>
-        <div class="size-card" data-size="extragrande" data-price="3.25" data-toppings="8">
-          <img src="images/helado_extragrande.png?v=17" alt="Extra Grande" class="size-bg" loading="lazy">
-          <div class="size-info">
-            <span class="size-name">Extra Grande</span>
-            <span class="size-price">$3.25</span>
-            <span class="size-toppings-count">8 toppings incluidos</span>
-            <div class="qty-control mt-2">
-              <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
-              <span class="qty-val" data-qty="0">0</span>
-              <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+
+        <div class="size-item">
+          <div class="size-card" data-size="grande" data-price="2.75" data-toppings="7">
+            <img src="images/helado_grande.png?v=17" alt="Grande" class="size-bg" loading="lazy">
+            <div class="size-info">
+              <span class="size-name">Grande</span>
+              <span class="size-price">$2.75</span>
+              <span class="size-toppings-count">7 toppings incluidos</span>
             </div>
+          </div>
+          <div class="qty-control mt-2">
+            <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+            <span class="qty-val" data-qty="0">0</span>
+            <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
+          </div>
+        </div>
+
+        <div class="size-item">
+          <div class="size-card" data-size="extragrande" data-price="3.25" data-toppings="8">
+            <img src="images/helado_extragrande.png?v=17" alt="Extra Grande" class="size-bg" loading="lazy">
+            <div class="size-info">
+              <span class="size-name">Extra Grande</span>
+              <span class="size-price">$3.25</span>
+              <span class="size-toppings-count">8 toppings incluidos</span>
+            </div>
+          </div>
+          <div class="qty-control mt-2">
+            <button class="qty-btn" onclick="updateQty(this, -1)">-</button>
+            <span class="qty-val" data-qty="0">0</span>
+            <button class="qty-btn" onclick="updateQty(this, 1)">+</button>
           </div>
         </div>
       </div>
+      
+      <div id="qty-summary" class="limit-message ok mt-4" style="display:none; text-align:center; margin-bottom: 15px; font-size: 1.05rem;"></div>
       
       <button class="btn btn-primary btn-block mt-4" id="btn-start-config" onclick="startConfigurationFlow()" style="display: none;">
         🎨 Personalizar mis helados
@@ -194,7 +206,7 @@
 
         <!-- Copiar toppings feature -->
         <div id="copy-toppings-container" style="display:none; margin-top: 15px; background: #f0fdf4; padding: 15px; border-radius: 12px; border: 1px solid #bbf7d0;">
-          <h4 style="margin: 0 0 10px 0; font-size: 1rem; color: #166534;">🔄 ¿Aplicar estos toppings a otros helados?</h4>
+          <h4 style="margin: 0 0 10px 0; font-size: 1rem; color: #166534;">🔄 ¿Quieres aplicar los mismos toppings a otros helados? Elije a cuáles:</h4>
           <div id="copy-toppings-list" style="display:flex; flex-direction:column; gap: 8px;"></div>
         </div>
 
@@ -457,6 +469,6 @@
     <button id="btn-accept-cookies" class="btn btn-primary" style="white-space: nowrap; padding: 10px 20px;">Aceptar</button>
   </div>
 
-  <script src="app.js?v=22"></script>
+  <script src="app.js?v=23"></script>
 </body>
 </html>
