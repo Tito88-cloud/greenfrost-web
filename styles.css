@@ -1162,6 +1162,25 @@ body.dark-mode .progress-track { background: var(--gray-700); }
   animation: floatLogo 4s ease-in-out infinite;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: var(--sp-2);
+}
+
+.logo-icon {
+  width: 60px;
+  animation: floatLogo 4s ease-in-out infinite;
+  z-index: 2;
+}
+
+.logo-text {
+  width: 180px;
+  z-index: 1;
+}
+
 .home-title {
   font-size: var(--fs-xl);
   font-weight: var(--fw-bold);

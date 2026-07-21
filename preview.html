@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Logo</title>
+  <style>
+    body {
+      background-color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px; /* Espacio entre el icono y el texto */
+    }
+
+    .logo-icon {
+      width: 70px;
+      /* Animación de flotación SOLO para el icono */
+      animation: floatLogo 4s ease-in-out infinite;
+    }
+
+    .logo-text {
+      width: 180px;
+      /* El texto se mantiene estático */
+    }
+
+    @keyframes floatLogo {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo-container">
+    <img src="images/Logo Helado mejorado.png" alt="Icono" class="logo-icon">
+    <img src="images/Logo Texto mejorado.png" alt="Texto" class="logo-text">
+  </div>
+
+</body>
+</html>
