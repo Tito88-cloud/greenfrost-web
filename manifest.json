@@ -8,13 +8,13 @@
   "theme_color": "#8dc63f",
   "icons": [
     {
-      "src": "images/Logo Helado mejorado_trans.png",
+      "src": "images/Icono App.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "images/Logo Helado mejorado_trans.png",
+      "src": "images/Icono App.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
