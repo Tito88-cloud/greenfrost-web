@@ -100,7 +100,7 @@ async function handleLogin(event) {
             saveSession({
                 clienteId: data.clienteId,
                 nombre: data.nombre,
-                telefono: usuario,
+                telefono: data.telefono || (usuario.match(/^[0-9]+$/) ? usuario : ""),
                 hmacSecret: data.hmacSecret || "12345"
             });
             document.getElementById('login-form').reset();

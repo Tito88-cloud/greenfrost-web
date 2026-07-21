@@ -66,6 +66,13 @@
           📲 Instalar App (Acceso Directo)
         </button>
       </div>
+
+      <!-- Privacy Policy Link -->
+      <div style="text-align: center; margin-top: 30px;">
+        <a href="#" onclick="document.getElementById('privacy-modal').classList.add('visible'); return false;" style="color: var(--text-secondary); text-decoration: underline; font-size: 0.85rem;">
+          🛡️ Leer Política de Privacidad
+        </a>
+      </div>
     </div>
   </div>
 
@@ -351,8 +358,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label" for="reg-phone">📱 Teléfono (opcional)</label>
-            <input class="form-input" type="tel" id="reg-phone" placeholder="Ej: 0991234567">
+            <label class="form-label" for="reg-phone">📱 Teléfono <span style="font-size: 0.8em; color: var(--green);">(Obligatorio)</span></label>
+            <input class="form-input" type="tel" id="reg-phone" placeholder="Ej: 0991234567" required>
           </div>
           <button type="submit" class="btn btn-accent btn-block" id="btn-register" onclick="handleRegister()">
             Crear Cuenta
@@ -446,20 +453,29 @@
   <!-- Privacy Policy Modal -->
   <div id="privacy-modal" class="modal-overlay">
     <div class="modal" style="max-width: 500px; max-height: 80vh; overflow-y: auto; text-align: left; margin: auto;">
-      <h2 style="margin-bottom: 15px; color: var(--green); text-align: center;">Política de Privacidad</h2>
+      <h2 style="margin-bottom: 15px; color: var(--green); text-align: center;">🛡️ Política de Privacidad y Seguridad</h2>
       <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
-        <strong>1. Recopilación de datos:</strong> Al participar en nuestro programa de fidelidad, recopilamos únicamente la información necesaria para el funcionamiento del mismo, como tu número de teléfono y el historial de puntos y premios canjeados.
+        En Greenfrost nos tomamos muy en serio tu privacidad. Te explicamos exactamente para qué usamos tus datos y por qué puedes confiar en nosotros:
       </p>
       <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
-        <strong>2. Uso de la información:</strong> Tus datos se utilizan exclusivamente para gestionar tus puntos acumulados, verificar tu identidad al reclamar premios y enviarte notificaciones directamente relacionadas con la heladería Greenfrost.
+        <strong>1. ¿Qué datos pedimos y por qué?</strong><br>
+        Recopilamos tu <strong>Nombre</strong> y <strong>Número de Teléfono</strong> con dos objetivos únicos:
+        <br>- <strong>Domicilios:</strong> Necesitamos contactarte para confirmar y enviar tu pedido.
+        <br>- <strong>Fidelidad:</strong> Asociamos tus puntos y premios a tu cuenta para que puedas canjearlos.
       </p>
       <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
-        <strong>3. Protección de datos:</strong> Toda la información se almacena de forma segura en nuestras bases de datos privadas y no se comparte, vende, ni distribuye a terceros bajo ninguna circunstancia.
+        <strong>2. Garantía de No Spam:</strong><br>
+        Tu número de teléfono <strong>JAMÁS</strong> será utilizado para enviarte publicidad invasiva, promociones no deseadas, ni mensajes molestos (Spam). Solo te contactaremos cuando hagas un pedido o ganes un premio.
+      </p>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
+        <strong>3. Confidencialidad Total:</strong><br>
+        No vendemos, cedemos ni compartimos tu información con ninguna empresa o tercero bajo ninguna circunstancia. Tus datos son exclusivamente de uso interno de Greenfrost.
       </p>
       <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px;">
-        <strong>4. Cookies:</strong> Utilizamos almacenamiento local (cookies) estrictamente necesario para mantener tu sesión activa y guardar tus preferencias dentro de esta aplicación.
+        <strong>4. Almacenamiento Seguro (Cookies):</strong><br>
+        Utilizamos almacenamiento local básico para recordar tu sesión y que no tengas que iniciar sesión cada vez que nos visitas.
       </p>
-      <button id="btn-close-privacy" class="btn btn-primary btn-block">Cerrar</button>
+      <button id="btn-close-privacy" class="btn btn-primary btn-block">Entendido, cerrar</button>
     </div>
   </div>
 
@@ -469,6 +485,6 @@
     <button id="btn-accept-cookies" class="btn btn-primary" style="white-space: nowrap; padding: 10px 20px;">Aceptar</button>
   </div>
 
-  <script src="app.js?v=26"></script>
+  <script src="app.js?v=28"></script>
 </body>
 </html>
