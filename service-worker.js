@@ -1,4 +1,4 @@
-const CACHE_NAME = 'greenfrost-cache-v34';
+const CACHE_NAME = 'greenfrost-cache-v35';
 const urlsToCache = [
   './',
   './index.html',
