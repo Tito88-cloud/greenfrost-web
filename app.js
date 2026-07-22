@@ -686,6 +686,7 @@ function sendDoubleWhatsApp(locationUrl, customerName, customerPhone) {
     cart.forEach((item) => {
         msg += `- Helado ${item.size} ($${item.finalPrice.toFixed(2)})%0A%0A`;
         msg += `Toppings: ${formatToppings(item.toppings)}%0A`;
+        if(item.extras > 0) msg += `⚠️ Toppings extras: ${item.extras} (+$${(item.extras * 0.25).toFixed(2)})%0A`;
         if(item.notes) msg += `📝 Notas: ${item.notes}%0A`;
         msg += `%0A`;
     });
