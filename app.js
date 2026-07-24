@@ -189,7 +189,7 @@ function renderPoints(puntosData) {
         'Local Rosales': 'Av. Venezuela. Calle del Colesterol',
         'Local Pambiles': 'Av. Rio Toachi y Abraham Calazacon. Sector ECU 911',
         'Local 29': 'Av. 29 de Mayo y Cocaniguas. Sector Parque Central',
-        'Local Quito': 'Av. Quito y Rio Chimbo. Sector Banco Bolivariano'
+        'Local Quito': 'Av. Quito y Rio Chimbo. Sector Paseo Shopping'
     };
 
     BRANCHES.forEach(branch => {
