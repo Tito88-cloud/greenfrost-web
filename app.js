@@ -308,7 +308,7 @@ function hideLoading() {
 
 // --- ORDER MODULE (MIGRATED) ---
 const toppings = {
-    frutas: ["🍓 Frutilla", "🍎 Manzana", "🍌 Banano", "🍈 Melon", "🍍 Pina", "🍑 Durazno", "🥝 Kiwi", "🥭 Mango", "🍇 Uva", "🟠 Papaya", "🌵 Pitahaya", "🟣 Higos", "🟡 Maracuya", "🍉 Sandía"],
+    frutas: ["🍓 Frutilla", "🍎 Manzana", "🍌 Banano", "🍈 Melon", "🍍 Pina", "🍑 Durazno", "🥝 Kiwi", "🍇 Uva", "🟠 Papaya", "🟣 Higos", "🟡 Maracuya", "🍉 Sandía", "🥭 Mango", "🌵 Pitahaya"],
     aderezos: ["🌰 Almendras", "🧠 Nueces", "🥜 Maní", "🍇 Pasas", "🥥 Coco Tostado", "🥥 Coco Blanco", "🥣 Granola", "⚪ Minigotas Chocolate Blanco", "⚫ Minigotas Chocolate Negro", "🌈 Minigotas Chocolate Colores", "🍬 Rocklets", "🎊 Grajeas", "🟤 Barquillo Piazza", "☁️ Marshmallows", "🔵 Chicles", "🧸 Gomitas", "🧀 Queso", "🍏 Perlas Manzana", "🫐 Perlas Arándano", "🍒 Perlas Cereza", "🍪 Galleta Oreo"],
     salsas: ["🍍 Mermelada Piña", "🟠 Mermelada Guayaba", "🍓 Mermelada Frutilla", "🍇 Mermelada Mora", "🍓 Milano Fresa", "🍫 Milano Chocolate", "🔵Milano Chicle", "🟡Manjar", "🥛 Leche Condensada", "🍯 Miel", "🔥🍫 Choc. Caliente", "⚪ Piña Colada", "🌿 Licor Menta"]
 };
