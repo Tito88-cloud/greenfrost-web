@@ -126,6 +126,10 @@ function logout() {
 function showDashboard() {
     const session = getSession();
     document.getElementById('user-name').innerText = session.nombre;
+    const clientIdEl = document.getElementById('user-client-id');
+    if (clientIdEl && session.clienteId) {
+        clientIdEl.innerText = session.clienteId;
+    }
     showSubView('fidelidad-dashboard');
     startQRAutoRefresh();
     startPointsPolling();
