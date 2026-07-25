@@ -308,10 +308,15 @@ function hideLoading() {
 
 // --- ORDER MODULE (MIGRATED) ---
 const toppings = {
-    frutas: ["🍓 Frutilla", "🍎 Manzana", "🍌 Banano", "🍈 Melon", "🍍 Pina", "🍑 Durazno", "🥝 Kiwi", "🥭 Mango", "🍇 Uva", "🟠 Papaya", "🌵 Pitahaya", "🟣 Higos", "🟡 Maracuya"],
+    frutas: ["🍓 Frutilla", "🍎 Manzana", "🍌 Banano", "🍈 Melon", "🍍 Pina", "🍑 Durazno", "🥝 Kiwi", "🥭 Mango", "🍇 Uva", "🟠 Papaya", "🌵 Pitahaya", "🟣 Higos", "🟡 Maracuya", "🍉 Sandía"],
     aderezos: ["🌰 Almendras", "🧠 Nueces", "🥜 Maní", "🍇 Pasas", "🥥 Coco Tostado", "🥥 Coco Blanco", "🥣 Granola", "⚪ Minigotas Chocolate Blanco", "⚫ Minigotas Chocolate Negro", "🌈 Minigotas Chocolate Colores", "🍬 Rocklets", "🎊 Grajeas", "🟤 Barquillo Piazza", "☁️ Marshmallows", "🔵 Chicles", "🧸 Gomitas", "🧀 Queso", "🍏 Perlas Manzana", "🫐 Perlas Arándano", "🍒 Perlas Cereza", "🍪 Galleta Oreo"],
     salsas: ["🍍 Mermelada Piña", "🟠 Mermelada Guayaba", "🍓 Mermelada Frutilla", "🍇 Mermelada Mora", "🍓 Milano Fresa", "🍫 Milano Chocolate", "🔵Milano Chicle", "🟡Manjar", "🥛 Leche Condensada", "🍯 Miel", "🔥🍫 Choc. Caliente", "⚪ Piña Colada", "🌿 Licor Menta"]
 };
+
+// === FRUTAS FUERA DE TEMPORADA ===
+// Para desbloquear una fruta, simplemente quítala de este array.
+// Ejemplo: si ya es temporada de Mango, borra "🥭 Mango" de aquí.
+const outOfSeason = ["🥭 Mango", "🌵 Pitahaya"];
 
 let cart = [];
 let pendingIceCreams = [];
@@ -324,9 +329,16 @@ function initOrders() {
         if(container) {
             toppings[cat].forEach(t => {
                 const div = document.createElement('div');
-                div.className = 'topping-chip';
-                div.innerHTML = `${t}`;
-                div.onclick = () => toggleTopping(t, div);
+                const isOutOfSeason = outOfSeason.includes(t);
+                div.className = 'topping-chip' + (isOutOfSeason ? ' out-of-season' : '');
+                div.innerHTML = isOutOfSeason ? `${t}<br><span class="season-label">(solo en temporada)</span>` : `${t}`;
+                div.onclick = () => {
+                    if (isOutOfSeason) {
+                        showToast('Disculpa, no estamos en temporada de esta fruta por el momento', 'warn');
+                        return;
+                    }
+                    toggleTopping(t, div);
+                };
                 container.appendChild(div);
             });
         }

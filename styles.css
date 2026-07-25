@@ -553,6 +553,26 @@ body.dark-mode ::-webkit-scrollbar-thumb { background: var(--gray-600); }
   box-shadow: 0 2px 10px var(--fuchsia-glow);
 }
 
+.topping-chip.out-of-season {
+  opacity: 0.5;
+  border-style: dashed;
+  flex-direction: column;
+  text-align: center;
+  cursor: not-allowed;
+}
+
+.topping-chip.out-of-season:hover {
+  border-color: var(--border-color);
+  background: var(--bg-card);
+}
+
+.season-label {
+  font-size: 0.6rem;
+  color: var(--fuchsia);
+  font-weight: 600;
+  line-height: 1;
+}
+
 .limit-message {
   display: flex;
   align-items: center;
