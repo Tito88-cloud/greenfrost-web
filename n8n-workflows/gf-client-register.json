@@ -40,7 +40,7 @@
       "typeVersion": 1,
       "position": [ 650, 300 ],
       "parameters": {
-        "jsCode": "const crypto = require('crypto');\nif (items.length > 0 && items[0].json.usuario) {\n    return { json: { error: 'El usuario ya existe' } };\n}\nconst body = $('Webhook').first().json.body;\nfunction uuid() {\n  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {\n    const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);\n  });\n}\nconst clienteId = uuid();\nconst hmacSecret = crypto.randomBytes(16).toString('hex');\nconst passwordHash = crypto.createHash('sha256').update(body.password).digest('hex');\nreturn { json: { clienteId, nombre: body.nombre, usuario: body.usuario, passwordHash, telefono: body.telefono, hmacSecret, fechaRegistro: new Date().toISOString(), estado: 'activo' } };"
+        "jsCode": "const crypto = require('crypto');\nif (items.length > 0 && items[0].json.usuario) {\n    return { json: { error: 'El usuario ya existe' } };\n}\nconst body = $('Webhook').first().json.body;\nconst clienteId = Math.floor(100000 + Math.random() * 900000).toString();\nconst hmacSecret = crypto.randomBytes(16).toString('hex');\nconst passwordHash = crypto.createHash('sha256').update(body.password).digest('hex');\nreturn { json: { clienteId, nombre: body.nombre, usuario: body.usuario, passwordHash, telefono: body.telefono, hmacSecret, fechaRegistro: new Date().toISOString(), estado: 'activo' } };"
       }
     },
     {

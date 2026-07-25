@@ -39,12 +39,7 @@ if (items.length > 0 && items[0].json.usuario) {
     return { json: { error: 'El usuario ya existe' } };
 }
 const body = $('Webhook').first().json.body;
-function uuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-  });
-}
-const clienteId = uuid();
+const clienteId = Math.floor(100000 + Math.random() * 900000).toString();
 const hmacSecret = crypto.randomBytes(16).toString('hex');
 const passwordHash = crypto.createHash('sha256').update(body.password).digest('hex');
 return { json: { clienteId, nombre: body.nombre, usuario: body.usuario, passwordHash, telefono: body.telefono, hmacSecret, fechaRegistro: new Date().toISOString(), estado: 'activo' } };
