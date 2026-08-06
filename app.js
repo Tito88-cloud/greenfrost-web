@@ -26,8 +26,8 @@ function switchView(viewId, pushState = true) {
     }
 
     if (viewId === 'fidelidad') {
-        if (isAuthenticated()) showDashboard();
-        else showSubView('fidelidad-login');
+        window.location.href = 'https://mi.greenfrost.ec';
+        return;
     } else {
         stopQRAutoRefresh();
         stopPointsPolling();
