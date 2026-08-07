@@ -773,7 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.state && e.state.viewId) {
             switchView(e.state.viewId, false);
         } else {
-            switchView('home', false);
+            switchView('pedidos', false);
         }
     });
 
@@ -783,12 +783,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const logForm = document.getElementById('login-form');
     if (logForm) logForm.addEventListener('submit', handleLogin);
     
-    // Automatically switch to fidelidad if authenticated and we navigated there
-    if (isAuthenticated()) {
-        const activeView = document.querySelector('.view.active');
-        if(activeView && activeView.id === 'view-fidelidad') {
-            showDashboard();
-        }
+    if (window.location.hash === '#home') {
+        switchView('home', false);
+    } else {
+        switchView('pedidos', false);
     }
 });
 
